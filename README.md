@@ -128,9 +128,16 @@ The configuration used to generate the rocket chip comes from the `CONFIG` envir
 
 #### <a name="genRC"></a> Generating Verilog for Rocket Chip
 
+Before generating Verilog, you need to publish firrtl for external dependencies with:
+
+     $ cd rocket-chip/firrtl
+     $ sbt publish-local
+
 Enter into the directory for your board (current options are `zybo`, `zedboard`, and `zc706`). After making changes within `rocket-chip` and/or `common/src/main/scala`, you can run the rocket chip generator and copy the newly generated verilog back into the board's src/verilog directory with:
 
      $ make rocket
+
+If you find SCALA complains about "file name too long" when making rocket, that's due to Linux's encrypted directory. To solve this, you probably want to move the whole project to /tmp.
 
 You can also explicitly set the `CONFIG` variable from the command-line (can do this for any command):
 
