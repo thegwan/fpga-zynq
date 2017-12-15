@@ -23,7 +23,8 @@ _Note_: If you are seeking to test your own modifications to rocket chip (RC) us
 
 ### <a name="toc"></a> Table of Contents
 + [Overview of System Stack](#overview)
-+ [1 - Quick Instructions](#quickinst)
++ [0 - Quick Instructions](#quickinst)
++ [1 - Building riscv-tools](#riscvtools)
 + [2 - Pushing Your Rocket Modifications to the FPGA](#bitstream)
     + [Setting Up Your Workspace](#workspace)
     + [Configuring Rocket Chip](#configRC)
@@ -80,7 +81,7 @@ Our system will allow you to run a RISC-V binary on a rocket core instantiated o
 
 
 
-1) <a name="quickinst"></a> Quick Instructions 
+0) <a name="quickinst"></a> Quick Instructions 
 ------------------
 _Using prebuilt images, run hello world and/or linux on rocket_
 
@@ -104,6 +105,35 @@ Finally, eject the SD card, insert it into the board, set the board's boot jumpe
 
 Awesome! You can now run RISC-V binaries on Rocket. If you'd like to boot linux on the Rocket core, see _[Booting Up and Interacting with the RISC-V Rocket Core](#booting)_.
 
+1) <a name="riscvtools"></a> Quick Instructions 
+------------------
+
+This section aims to build the compatible riscv-tools including the compilers riscv64-unknown-elf-gcc and riscv64-unknown-gnu-linux-gcc.
+
+    $ sudo apt-get install autoconf automake autotools-dev curl device-tree-compiler libmpc-dev libmpfr-dev libgmp-dev libusb-1.0-0-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev device-tree-compiler pkg-config
+    $ cd zc706
+    $ make init-submodules
+    $ cd ../rocket-chip/riscv-tools/
+    $ git submodule update --init --recursive
+    $ export RISCV=/an/awesome/path/to/install/riscv/toolchain
+
+Install riscv64-unknown-elf\*
+
+    $ ./build.sh
+
+Install riscv64-unknown-gnu-linux\*
+
+    $ ./configure --prefix=$RISCV
+    $ make linux
+
+Add the built executables to PATH
+
+    $ export PATH=$PATH:$RISCV/bin
+
+Each time you start a terminal, you need to set the environment variable so better to add the following lines to ~/.bashrc
+
+    $ export RISCV=/an/awesome/path/to/install/riscv/toolchain
+    $ export PATH=$PATH:$RISCV/bin
 
 
 2) <a name="bitstream"></a> Pushing Your Rocket Modifications to the FPGA
